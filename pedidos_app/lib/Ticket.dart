@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedidos_app/menu.dart';
 
 class TicketFinal extends StatefulWidget {
   @override
@@ -11,69 +12,134 @@ class _TicketFinalState extends State<TicketFinal> {
     return Scaffold(
       backgroundColor: Colors.grey[200], // Fondo gris para resaltar el ticket
       body: Center(
-        child: Container(
-          width: 300,
-          height: 500,
-          child: CustomPaint(
-            painter: TicketPainter(),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Text(
-                      'Ticket de Cine',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Película: Una Aventura Increíble',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Fecha: 20 Mayo 2024',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Hora: 19:30',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Asiento: F13',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  Spacer(),
-                  Center(
-                    child: Text(
-                      'Disfruta la Función',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 300,
+              height: 600,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
                   ),
                 ],
               ),
+              child: CustomPaint(
+                painter: TicketPainter(),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Tu Orden:',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment
+                            .center, // Alineación vertical: centro
+                        children: [
+                          Text(
+                            'Gracias por Comprar con  Nosotros',
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign
+                                .center, // Alineación horizontal: centro
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'No. Orden: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Items: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Fecha: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Hora de Tolerancia: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Sucursal: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Spacer(),
+                      Center(
+                        child: Text(
+                          'Toma Captura de Pantalla de este Ticket',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
+            SizedBox(height: 50.0), // Espacio entre el ticket y el botón
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Menu_Obelie(initialEleccionPastel: 0)),
+                );
+              },
+              child: const Text(
+                'Terminar Compra',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(200, 50),
+                backgroundColor: Color.fromARGB(255, 60, 119, 63),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -87,6 +153,7 @@ class TicketPainter extends CustomPainter {
     Path path = Path();
 
     double cornerRadius = 20.0;
+    double notchSize = 10.0;
 
     // Start from top left
     path.moveTo(0, cornerRadius);
@@ -100,7 +167,13 @@ class TicketPainter extends CustomPainter {
     // Top right corner
     path.quadraticBezierTo(size.width, 0, size.width, cornerRadius);
 
-    // Right line
+    // Right line with notch
+    path.lineTo(size.width, size.height / 2 - notchSize);
+    path.arcToPoint(
+      Offset(size.width, size.height / 2 + notchSize),
+      radius: Radius.circular(notchSize),
+      clockwise: false,
+    );
     path.lineTo(size.width, size.height - cornerRadius);
 
     // Bottom right corner
@@ -113,20 +186,16 @@ class TicketPainter extends CustomPainter {
     // Bottom left corner
     path.quadraticBezierTo(0, size.height, 0, size.height - cornerRadius);
 
-    // Left line
+    // Left line with notch
+    path.lineTo(0, size.height / 2 + notchSize);
+    path.arcToPoint(
+      Offset(0, size.height / 2 - notchSize),
+      radius: Radius.circular(notchSize),
+      clockwise: false,
+    );
     path.lineTo(0, cornerRadius);
 
     canvas.drawPath(path, paint);
-
-    // Draw the perforated lines (dots)
-    Paint dotPaint = Paint()..color = Colors.grey;
-    double dashWidth = 5.0;
-    double dashSpace = 5.0;
-    double startY = 0;
-    while (startY < size.height) {
-      canvas.drawCircle(Offset(size.width / 2, startY), 1.5, dotPaint);
-      startY += dashWidth + dashSpace;
-    }
   }
 
   @override
