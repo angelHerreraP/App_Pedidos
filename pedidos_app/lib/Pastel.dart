@@ -26,7 +26,7 @@ class _SeleccionPastelState extends State<SeleccionPastel> {
               // Imagen grande
               Container(
                 width: double.infinity, // Ancho completo
-                height: 300.0, // Altura fija de la imagen
+                height: 250.0, // Altura fija de la imagen
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
@@ -114,7 +114,7 @@ class _SeleccionPastelState extends State<SeleccionPastel> {
                   ],
                 ),
               ),
-              SizedBox(height: 30.0), // Espacio entre el dropdown y el botón
+              SizedBox(height: 50.0), // Espacio entre el dropdown y el botón
 
               // ElevatedButton
               Center(
