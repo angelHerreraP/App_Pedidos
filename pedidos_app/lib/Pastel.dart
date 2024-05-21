@@ -59,47 +59,82 @@ class _SeleccionPastelState extends State<SeleccionPastel> {
               SizedBox(
                   height: 30.0), // Espacio entre la descripción y el dropdown
 
-              // Dropdown
-              Text(
-                'Elige una Sucursal',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
+              // Dropdown y su descripción
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      'Elige una Sucursal',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                        height: 10.0), // Espacio entre el texto y el dropdown
+                    Container(
+                      width: 200.0, // Establece el ancho deseado
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          icon: Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: TextStyle(color: Colors.black),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              if (newValue != null) {
+                                dropdownValue = newValue;
+                              }
+                            });
+                          },
+                          items: <String>[
+                            'Opciones',
+                            'Ojocaliente',
+                            'Agostadero',
+                            'Jardines',
+                            'Central de Autobuses',
+                            'Colosio',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 10.0), // Espacio entre el texto y el dropdown
-              DropdownButton<String>(
-                value: dropdownValue,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
+              SizedBox(height: 30.0), // Espacio entre el dropdown y el botón
+
+              // ElevatedButton
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Acciones del botón
+                  },
+                  child: const Text(
+                    'Agregar a Carrito',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(200, 50),
+                    backgroundColor: Color.fromARGB(255, 60, 119, 63),
+                  ),
                 ),
-                onChanged: (String? newValue) {
-                  // Cambiado a String?
-                  setState(() {
-                    if (newValue != null) {
-                      // Verificar si newValue no es null
-                      dropdownValue = newValue;
-                    }
-                  });
-                },
-                items: <String>[
-                  'Opciones',
-                  'Ojocaliente',
-                  'Agostadero',
-                  'Jardines',
-                  'Central de Autobuses',
-                  'Colosio',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
               ),
             ],
           ),
