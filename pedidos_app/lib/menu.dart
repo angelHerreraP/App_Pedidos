@@ -151,6 +151,7 @@ class _Button extends StatelessWidget {
   }
 }
 
+//Cosas de Supabase
 //import 'package:supabase_flutter/supabase_flutter.dart';
 //
 //  await Supabase.initialize(

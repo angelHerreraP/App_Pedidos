@@ -10,6 +10,10 @@ class _TicketFinalState extends State<TicketFinal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(),
+        backgroundColor: Colors.grey[200], // Fondo gris para resaltar el ticket
+      ),
       backgroundColor: Colors.grey[200], // Fondo gris para resaltar el ticket
       body: Center(
         child: Column(
@@ -116,7 +120,7 @@ class _TicketFinalState extends State<TicketFinal> {
                 ),
               ),
             ),
-            SizedBox(height: 50.0), // Espacio entre el ticket y el botón
+            SizedBox(height: 35.0), // Espacio entre el ticket y el botón
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
