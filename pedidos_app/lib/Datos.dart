@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:pedidos_app/custom_app_basr.dart';
+import 'package:pedidos_app/custom_app_basr.dart'; // Asegúrate de que esta ruta y archivo son correctos
 
 class DatosUsuario extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class _DatosUsuarioState extends State<DatosUsuario> {
   String _nombre = '';
   String _correo = '';
   String _telefono = '';
-  String _ubicacion = '';
+  String _ubicacion = 'Agostadero'; // Valor inicial de la lista
   DateTime _fecha = DateTime.now();
   TimeOfDay _hora = TimeOfDay.now();
 
@@ -174,7 +174,7 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                     // TODO: Handle form submission
                   }
                 },
-                child: Text('Anadir a Carrito'),
+                child: Text('Añadir a Carrito'),
               ),
             ],
           ),
