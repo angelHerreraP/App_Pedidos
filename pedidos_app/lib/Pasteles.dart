@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pedidos_app/Datos.dart';
 import 'package:pedidos_app/Pastel.dart';
+import 'package:pedidos_app/Ticket.dart';
 import 'package:pedidos_app/custom_app_basr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -71,7 +71,7 @@ class _PastelesState extends State<Pasteles> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DatosUsuario()),
+                      MaterialPageRoute(builder: (context) => TicketFinal()),
                     );
                   },
                 ),

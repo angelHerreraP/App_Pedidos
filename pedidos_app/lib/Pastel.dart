@@ -7,7 +7,21 @@ class SeleccionPastel extends StatefulWidget {
 }
 
 class _SeleccionPastelState extends State<SeleccionPastel> {
-  String dropdownValue = 'Opciones'; // Valor inicial del dropdown
+  int _cantidad = 1; // Valor inicial de la cantidad
+
+  void _incrementarCantidad() {
+    setState(() {
+      _cantidad++;
+    });
+  }
+
+  void _decrementarCantidad() {
+    setState(() {
+      if (_cantidad > 1) {
+        _cantidad--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,30 +30,24 @@ class _SeleccionPastelState extends State<SeleccionPastel> {
         leading: BackButton(),
       ),
       body: SingleChildScrollView(
-        // Para permitir el scroll si el contenido es muy largo
         child: Padding(
-          padding:
-              const EdgeInsets.all(16.0), // Padding alrededor del contenido
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Imagen grande
               Container(
-                width: double.infinity, // Ancho completo
-                height: 250.0, // Altura fija de la imagen
+                width: double.infinity,
+                height: 250.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(
-                        'assets/pastel.jpg'), // Reemplaza con tu imagen
+                    image: AssetImage('Assets/Images/Betun.jpeg'),
                     fit: BoxFit.cover,
                   ),
-                  borderRadius:
-                      BorderRadius.circular(10.0), // Bordes redondeados
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              SizedBox(
-                  height: 20.0), // Espacio entre la imagen y la descripción
-
+              SizedBox(height: 20.0),
               // Descripción
               Text(
                 'Pastel de Guayaba',
@@ -48,73 +56,48 @@ class _SeleccionPastelState extends State<SeleccionPastel> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
-                  height: 10.0), // Espacio entre el título y la descripción
+              SizedBox(height: 10.0),
               Text(
                 'Este pastel es perfecto para cualquier ocasión. Está hecho con los ingredientes más frescos y tiene un sabor inigualable.',
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
               ),
-              SizedBox(
-                  height: 30.0), // Espacio entre la descripción y el dropdown
+              SizedBox(height: 30.0),
 
-              // Dropdown y su descripción
+              // Selector de cantidad
               Center(
                 child: Column(
                   children: [
                     Text(
-                      'Elige una Sucursal',
+                      '¿Cuántos desea?',
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
-                        height: 10.0), // Espacio entre el texto y el dropdown
-                    Container(
-                      width: 200.0, // Establece el ancho deseado
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
+                    SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: _decrementarCantidad,
                         ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
-                          icon: Icon(Icons.arrow_downward),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: TextStyle(color: Colors.black),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              if (newValue != null) {
-                                dropdownValue = newValue;
-                              }
-                            });
-                          },
-                          items: <String>[
-                            'Opciones',
-                            'Ojocaliente',
-                            'Agostadero',
-                            'Jardines',
-                            'Central de Autobuses',
-                            'Colosio',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
+                        Text(
+                          '$_cantidad',
+                          style: TextStyle(fontSize: 20.0),
                         ),
-                      ),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: _incrementarCantidad,
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 50.0), // Espacio entre el dropdown y el botón
+              SizedBox(height: 50.0),
 
               // ElevatedButton
               Center(
