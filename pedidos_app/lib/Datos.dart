@@ -12,7 +12,6 @@ class _DatosUsuarioState extends State<DatosUsuario> {
   final _formKey = GlobalKey<FormState>();
 
   String _nombre = '';
-  String _correo = '';
   String _telefono = '';
   String _ubicacion = 'Agostadero'; // Valor inicial de la lista
   DateTime _fecha = DateTime.now();
@@ -23,13 +22,15 @@ class _DatosUsuarioState extends State<DatosUsuario> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: LogoAppBar(),
+      appBar: LogoAppBar(
+        leading: BackButton(),
+      ),
       body: Container(
         color: Colors.white,
         child: Form(
           key: _formKey,
           child: ListView(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(20),
             children: [
               TextFormField(
                 decoration: InputDecoration(
@@ -43,24 +44,6 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                   return null;
                 },
                 onSaved: (value) => _nombre = value!,
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Correo',
-                  hintText: 'Ingrese su correo electrónico',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su correo electrónico';
-                  }
-                  if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                      .hasMatch(value)) {
-                    return 'Por favor ingrese un correo electrónico válido';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _correo = value!,
               ),
               SizedBox(height: 16),
               TextFormField(

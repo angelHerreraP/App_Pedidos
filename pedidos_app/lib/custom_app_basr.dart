@@ -11,7 +11,6 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false, // Disable the default back button
       backgroundColor: Color.fromARGB(255, 60, 119, 63),
-
       title: Container(
         width: 100, // Set the desired width here
         height: 80, // Set the desired height here
