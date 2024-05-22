@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:pedidos_app/Ticket.dart';
 import 'package:pedidos_app/custom_app_basr.dart'; // Asegúrate de que esta ruta y archivo son correctos
 
 class DatosUsuario extends StatefulWidget {
@@ -149,15 +150,28 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    // TODO: Handle form submission
-                  }
-                },
-                child: Text('Añadir a Carrito'),
+              SizedBox(height: 30),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TicketFinal()),
+                    );
+                  },
+                  child: const Text(
+                    'Enviar Pedido',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(200, 50),
+                    backgroundColor: Color.fromARGB(255, 60, 119, 63),
+                  ),
+                ),
               ),
             ],
           ),
