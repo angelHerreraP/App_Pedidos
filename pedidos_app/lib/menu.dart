@@ -151,8 +151,10 @@ class _Button extends StatelessWidget {
   }
 }
 
-//                    Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                           builder: (context) => SeleccionPastel()),
-//                     );
+//import 'package:supabase_flutter/supabase_flutter.dart';
+//
+//  await Supabase.initialize(
+//       url: 'https://aqsixijowkhelwqmowuv.supabase.co',
+//       anonKey:
+//           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxc2l4aWpvd2toZWx3cW1vd3V2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM0Nzk1NDIsImV4cCI6MjAyOTA1NTU0Mn0.bj3YMVCs6_5kN8RtQA1yWA-cZNLwHPvDJQGiyX4k2Oo');
+//final supabase = Supabase.instance.client;
