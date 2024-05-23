@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedidos_app/Carrito.dart';
 
 // Define the image asset path as a constant
 class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -28,10 +29,10 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => _buildBottomSheetContent(context),
-                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => CarritoItem(),
               },
             ),
           ),
@@ -63,3 +64,8 @@ Widget _buildBottomSheetContent(BuildContext context) {
     ),
   );
 }
+
+//showModalBottomSheet(
+//  context: context,
+//  builder: (context) => _buildBottomSheetContent(context),
+//);
