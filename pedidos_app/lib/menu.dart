@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pedidos_app/Pasteles.dart';
 import 'package:pedidos_app/custom_app_basr.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Menu_Obelie extends StatelessWidget {
   int _eleccionPastel = 0;
+  final supabase = Supabase.instance.client.from('categorias').select();
 
   Menu_Obelie({required int initialEleccionPastel})
       : _eleccionPastel = initialEleccionPastel;
