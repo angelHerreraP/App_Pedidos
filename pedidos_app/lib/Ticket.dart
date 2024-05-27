@@ -123,12 +123,8 @@ class _TicketFinalState extends State<TicketFinal> {
             SizedBox(height: 35.0), // Espacio entre el ticket y el botón
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Menu_Obelie(initialEleccionPastel: 0)),
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Menu_Obelie()));
               },
               child: const Text(
                 'Terminar Compra',

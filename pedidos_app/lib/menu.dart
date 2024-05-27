@@ -5,10 +5,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Menu_Obelie extends StatelessWidget {
   int _eleccionPastel = 0;
-  final supabase = Supabase.instance.client.from('categorias').select();
 
-  Menu_Obelie({required int initialEleccionPastel})
-      : _eleccionPastel = initialEleccionPastel;
+  final supabase = Supabase.instance.client;
 
   @override
   Widget build(BuildContext context) {
@@ -17,83 +15,140 @@ class Menu_Obelie extends StatelessWidget {
       body: Container(
         color: Color.fromARGB(
             255, 255, 255, 255), // Set the background color of the page
-        child: ListView(
-          children: [
-            const SizedBox(height: 30), //espaci entre elementos
+        child: FutureBuilder<void>(
+          future: _initializeSupabase(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              return StreamBuilder<dynamic>(
+                stream: supabase.from('categorias').stream(primaryKey: ['id']),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    return Center(child: Text('No hay categorías disponibles'));
+                  }
 
-            _Button(
-              imageAssetPath: 'Assets/Images/Betun.jpeg',
-              text: 'Pasteles con Betun',
-              onPressed: () {
-                _eleccionPastel = 1;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Pasteles(eleccionPastel: _eleccionPastel)),
-                );
-              },
-            ),
-            _Button(
-              imageAssetPath: 'Assets/Images/Caseros.webp',
-              text: 'Pasteles Caseros',
-              onPressed: () {
-                _eleccionPastel = 5;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Pasteles(eleccionPastel: _eleccionPastel)),
-                );
-              },
-            ),
-            _Button(
-              imageAssetPath: 'Assets/Images/Gelatina.jpeg',
-              text: 'Otros',
-              onPressed: () {
-                _eleccionPastel = 4;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Pasteles(eleccionPastel: _eleccionPastel)),
-                );
-              },
-            ),
-            _Button(
-              imageAssetPath: 'Assets/Images/Crear.jpeg',
-              text: 'Crea tu Pastel',
-              onPressed: () {
-                _eleccionPastel = 4;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Pasteles(eleccionPastel: _eleccionPastel)),
-                );
-              },
-            ),
-            _Button(
-              imageAssetPath: 'Assets/Images/Extras.jpeg',
-              text: 'Todo Para tu Pastel',
-              onPressed: () {
-                _eleccionPastel = 4;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Pasteles(eleccionPastel: _eleccionPastel)),
-                );
-              },
-            ),
-          ],
+                  final categorias = snapshot.data as List<dynamic>;
+                  final filteredCategorias = categorias
+                      .where((categoria) =>
+                          categoria['nombre'] != 'Chamucos' &&
+                          categoria['nombre'] != 'Pasteles' &&
+                          categoria['nombre'] != 'Pan Casero' &&
+                          categoria['nombre'] != 'Gelatina' &&
+                          categoria['nombre'] != 'Velas')
+                      .toList();
+
+                  return ListView(
+                    children: [
+                      const SizedBox(height: 30), // Espacio entre elementos
+
+                      // Botones manuales con nombres unificados
+                      _Button(
+                        imageAssetPath: 'Assets/Images/Betun.jpeg',
+                        text: 'Pasteles con Betun',
+                        onPressed: () {
+                          _eleccionPastel = 1;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Pasteles(eleccionPastel: _eleccionPastel)),
+                          );
+                        },
+                      ),
+                      _Button(
+                        imageAssetPath: 'Assets/Images/Caseros.webp',
+                        text: 'Pasteles Caseros',
+                        onPressed: () {
+                          _eleccionPastel = 5;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Pasteles(eleccionPastel: _eleccionPastel)),
+                          );
+                        },
+                      ),
+                      _Button(
+                        imageAssetPath: 'Assets/Images/Gelatina.jpeg',
+                        text: 'Otros',
+                        onPressed: () {
+                          _eleccionPastel = 4;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Pasteles(eleccionPastel: _eleccionPastel)),
+                          );
+                        },
+                      ),
+                      _Button(
+                        imageAssetPath: 'Assets/Images/Extras.jpeg',
+                        text: 'Todo Para tu Pastel',
+                        onPressed: () {
+                          _eleccionPastel = 4;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Pasteles(eleccionPastel: _eleccionPastel)),
+                          );
+                        },
+                      ),
+                      _Button(
+                        imageAssetPath: 'Assets/Images/Crear.jpeg',
+                        text: 'Crea tu Pastel',
+                        onPressed: () {
+                          _eleccionPastel = 0; // Dejar libre por ahora
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Pasteles(eleccionPastel: _eleccionPastel)),
+                          );
+                        },
+                      ),
+
+                      // Botones dinámicos desde Supabase, excluyendo las categorías duplicadas
+                      ...filteredCategorias.map((categoria) {
+                        return _Button(
+                          imageAssetPath:
+                              'Assets/Images/${categoria['nombre']}.jpeg',
+                          text: categoria['nombre'],
+                          onPressed: () async {
+                            _eleccionPastel = categoria['id'];
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Pasteles(eleccionPastel: _eleccionPastel),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ],
+                  );
+                },
+              );
+            }
+          },
         ),
       ),
     );
   }
+
+  Future<void> _initializeSupabase() async {
+    // Inicialización de Supabase (dejar vacío si ya está inicializado)
+  }
 }
 
-//esto si es el widget de generarnboton //hola
 class _Button extends StatelessWidget {
   final String imageAssetPath;
   final String text;
@@ -142,7 +197,6 @@ class _Button extends StatelessWidget {
                     fontSize: 25,
                   ),
                 ),
-
                 Spacer(), // Pushes text to the bottom
               ],
             ),
@@ -152,12 +206,3 @@ class _Button extends StatelessWidget {
     );
   }
 }
-
-//Cosas de Supabase
-//import 'package:supabase_flutter/supabase_flutter.dart';
-//
-//  await Supabase.initialize(
-//       url: 'https://aqsixijowkhelwqmowuv.supabase.co',
-//       anonKey:
-//           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxc2l4aWpvd2toZWx3cW1vd3V2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM0Nzk1NDIsImV4cCI6MjAyOTA1NTU0Mn0.bj3YMVCs6_5kN8RtQA1yWA-cZNLwHPvDJQGiyX4k2Oo');
-//final supabase = Supabase.instance.client;

@@ -57,10 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => Menu_Obelie(
-                            initialEleccionPastel: 0,
-                          )),
+                  MaterialPageRoute(builder: (context) => Menu_Obelie()),
                 );
               },
               child: const Text(
