@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pedidos_app/Datos.dart';
 import 'package:pedidos_app/Pastel.dart';
 import 'package:pedidos_app/custom_app_basr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-//Codigo que inicia SupaBase
+// Código que inicia Supabase
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
@@ -12,9 +11,18 @@ void main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxc2l4aWpvd2toZWx3cW1vd3V2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM0Nzk1NDIsImV4cCI6MjAyOTA1NTU0Mn0.bj3YMVCs6_5kN8RtQA1yWA-cZNLwHPvDJQGiyX4k2Oo',
   );
+  runApp(MyApp());
 }
 
-// Aqi manda a llam
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Pasteles(eleccionPastel: 1), // Cambia este valor según tu necesidad
+    );
+  }
+}
+
 class Pasteles extends StatefulWidget {
   final int eleccionPastel;
 
@@ -24,9 +32,9 @@ class Pasteles extends StatefulWidget {
   _PastelesState createState() => _PastelesState();
 }
 
-//Aqui inicia mi app
 class _PastelesState extends State<Pasteles> {
   List<dynamic> pasteles = [];
+  final String defaultImage = 'Assets/Images/Betun.jpeg';
 
   @override
   void initState() {
@@ -36,9 +44,18 @@ class _PastelesState extends State<Pasteles> {
 
   Future<void> fetchPasteles() async {
     final supabase = Supabase.instance.client;
-    final response = await supabase.from('productos').select('*');
+    final response = await supabase
+        .from('productos')
+        .select()
+        .eq('id_categoria', widget.eleccionPastel) as List<dynamic>;
+
+    // Filtrar los productos que no sean 'Carlotas y Reinas'
+    final filteredResponse = response
+        .where((item) => item['nombre'] != 'Carlotas y Reinas')
+        .toList();
+
     setState(() {
-      //pasteles = response.data;
+      pasteles = filteredResponse;
     });
   }
 
@@ -51,40 +68,41 @@ class _PastelesState extends State<Pasteles> {
       body: Container(
         color: Colors.white,
         child: ListView(
-          children: [
-            _ButtonRow(
-              buttons: [
-                _ButtonPastel(
-                  imageAssetPath: 'Assets/Images/Betun.jpeg',
-                  text: 'Pastel de Guayaba',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SeleccionPastel()),
-                    );
-                  },
-                ),
-                _ButtonPastel(
-                  imageAssetPath: 'Assets/Images/Betun.jpeg',
-                  text: 'Pastel de Baileys',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DatosUsuario()),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ), // Set background color to white
+          children: _buildRows(),
+        ),
       ),
     );
   }
+
+  List<Widget> _buildRows() {
+    List<Widget> rows = [];
+    for (int i = 0; i < pasteles.length; i += 2) {
+      List<_ButtonPastel> rowItems = [];
+      for (int j = i; j < i + 2 && j < pasteles.length; j++) {
+        rowItems.add(
+          _ButtonPastel(
+            imageAssetPath: defaultImage,
+            text: pasteles[j]['nombre']
+                .replaceAll('Pastel de ', '')
+                .trim(), // Eliminar la palabra "Pastel"
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      SeleccionPastel(), // Cambia esta pantalla según tu necesidad
+                ),
+              );
+            },
+          ),
+        );
+      }
+      rows.add(_ButtonRow(buttons: rowItems));
+    }
+    return rows;
+  }
 }
 
-//codigo _ButtonRow
 class _ButtonRow extends StatelessWidget {
   final List<_ButtonPastel> buttons;
 
@@ -98,7 +116,6 @@ class _ButtonRow extends StatelessWidget {
   }
 }
 
-//Formato boton
 class _ButtonPastel extends StatelessWidget {
   final String imageAssetPath;
   final String text;
@@ -126,13 +143,12 @@ class _ButtonPastel extends StatelessWidget {
                   image: AssetImage(imageAssetPath),
                   fit: BoxFit.cover,
                 ),
-                //esto se encarga de dar sombra a la de cada boton
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey[400]!, // Adjust shadow color as needed
-                    offset: Offset(0, 5), // Offset to create a bottom shadow
-                    blurRadius: 10.0, // Spread of the shadow
-                    spreadRadius: 2.0, // Size of the shadow relative to button
+                    color: Colors.grey[400]!,
+                    offset: Offset(0, 5),
+                    blurRadius: 10.0,
+                    spreadRadius: 2.0,
                   ),
                 ],
               ),
@@ -150,13 +166,17 @@ class _ButtonPastel extends StatelessWidget {
                     bottomRight: Radius.circular(10.0),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      text,
+                      textAlign: TextAlign
+                          .center, // Asegurar que el texto esté centrado
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
