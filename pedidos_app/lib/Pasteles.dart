@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedidos_app/Pastel.dart';
 import 'package:pedidos_app/custom_app_basr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -49,10 +48,11 @@ class _PastelesState extends State<Pasteles> {
         .select()
         .eq('id_categoria', widget.eleccionPastel) as List<dynamic>;
 
-    // Filtrar los productos que no sean 'Carlotas y Reinas'
-    final filteredResponse = response
-        .where((item) => item['nombre'] != 'Carlotas y Reinas')
-        .toList();
+    // Filtrar los productos que no contengan 'Pay' o 'Carlotas y Reinas'
+    final filteredResponse = response.where((item) {
+      String nombre = item['nombre'].toString().toLowerCase();
+      return !nombre.contains('pay') && !nombre.contains('carlotas y reinas');
+    }).toList();
 
     setState(() {
       pasteles = filteredResponse;
@@ -89,8 +89,10 @@ class _PastelesState extends State<Pasteles> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      SeleccionPastel(), // Cambia esta pantalla según tu necesidad
+                  builder: (context) => SeleccionPastel(
+                    nombrePastel: pasteles[j]['nombre'],
+                    idCategoria: widget.eleccionPastel,
+                  ),
                 ),
               );
             },
@@ -183,6 +185,53 @@ class _ButtonPastel extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SeleccionPastel extends StatefulWidget {
+  final String nombrePastel;
+  final int idCategoria;
+
+  SeleccionPastel({required this.nombrePastel, required this.idCategoria});
+
+  @override
+  _SeleccionPastelState createState() => _SeleccionPastelState();
+}
+
+class _SeleccionPastelState extends State<SeleccionPastel> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.nombrePastel),
+      ),
+      body: Center(
+        child: Text(
+          'Seleccionaste el pastel: ${widget.nombrePastel} con ID categoría: ${widget.idCategoria}',
+        ),
+      ),
+    );
+  }
+}
+
+class DatosUsuario extends StatelessWidget {
+  final String nombrePastel;
+  final int idCategoria;
+
+  DatosUsuario({required this.nombrePastel, required this.idCategoria});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Datos del Usuario'),
+      ),
+      body: Center(
+        child: Text(
+          'Pastel seleccionado: $nombrePastel con ID categoría: $idCategoria',
         ),
       ),
     );
