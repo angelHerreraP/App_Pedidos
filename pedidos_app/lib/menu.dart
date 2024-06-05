@@ -92,7 +92,7 @@ class Menu_Obelie extends StatelessWidget {
                         imageAssetPath: 'Assets/Images/Extras.jpeg',
                         text: 'Todo Para tu Pastel',
                         onPressed: () {
-                          _eleccionPastel = 4;
+                          _eleccionPastel = 2;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
