@@ -1,6 +1,9 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:pedidos_app/custom_app_basr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'pastel.dart'; // Import your pastel.dart file
 
 // Código que inicia Supabase
 void main() async {
@@ -185,53 +188,6 @@ class _ButtonPastel extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class SeleccionPastel extends StatefulWidget {
-  final String nombrePastel;
-  final int idCategoria;
-
-  SeleccionPastel({required this.nombrePastel, required this.idCategoria});
-
-  @override
-  _SeleccionPastelState createState() => _SeleccionPastelState();
-}
-
-class _SeleccionPastelState extends State<SeleccionPastel> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.nombrePastel),
-      ),
-      body: Center(
-        child: Text(
-          'Seleccionaste el pastel: ${widget.nombrePastel} con ID categoría: ${widget.idCategoria}',
-        ),
-      ),
-    );
-  }
-}
-
-class DatosUsuario extends StatelessWidget {
-  final String nombrePastel;
-  final int idCategoria;
-
-  DatosUsuario({required this.nombrePastel, required this.idCategoria});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Datos del Usuario'),
-      ),
-      body: Center(
-        child: Text(
-          'Pastel seleccionado: $nombrePastel con ID categoría: $idCategoria',
         ),
       ),
     );
